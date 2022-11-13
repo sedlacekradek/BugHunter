@@ -1,0 +1,46 @@
+<!--project section-->
+<div class="col-lg-6 col-12 mt-1">
+   <div class="card flex-fill">
+      <div class="card-header">
+         <span class="card-title mb-0">My Tickets</span><span style="float: right;"><a
+            href="{{ url_for('views.new_ticket', project_id=0)}}" class="btn btn-outline-primary btn-sm">add <i
+            class="bi bi-plus"></i></a></span>
+      </div>
+      <div>
+         <table class="table table-hover my-0 datatable">
+            <thead>
+               <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th class="d-none d-xl-table-cell">Last Update</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for ticket in tickets %}
+               <!--show projects if user in developers or is the author-->
+               {% if current_user in ticket.developers or current_user.id == ticket.author  %}
+               <tr>
+                  <td><a href="{{ url_for('views.view_ticket', id_number=ticket.id) }}">{{ticket.name}}</a></td>
+                  <td><span class="badge
+                     {{'bg-info' if ticket.type=='Feature' }}
+                     {{'bg-secondary' if ticket.type=='Bug' }}">
+                     {{ticket.type}}</span>
+                  </td>
+                  <td><span class="badge
+                     {{'bg-warning' if ticket.status=='In Progress' }}
+                     {{'bg-danger' if ticket.status=='Cancelled' }}
+                     {{'bg-success' if ticket.status=='Done' }}
+                     {{'bg-primary' if ticket.status=='Open' }}">
+                     {{ticket.status}}</span>
+                  </td>
+                  <td class="d-none d-xl-table-cell">{{ticket.last_update|datetime_format}}</td>
+               </tr>
+               {% endif %}
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+<!--section end-->

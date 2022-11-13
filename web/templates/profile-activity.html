@@ -1,0 +1,45 @@
+<!--activity section-->
+<div class="col-9">
+    <div class="card flex-fill">
+        <div class="card-header">
+            <span class="card-title mb-0">Recent Activity</span>
+        </div>
+        <div>
+            <table class="table table-hover my-0 datatable">
+                <thead>
+                    <tr>
+                        <th class="d-none d-xl-table-cell">Timestamp</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for notification in notifications_sent %}
+                    <tr>
+                        <td width="20%" class="d-none d-xl-table-cell">{{ notification.timestamp|datetime_format }}<br>
+                            <!--based on notification type load icon-->
+                            {% if notification.type == "update" %}
+                            <i class="bi bi-pencil-square card-icon"></i>
+                            {% elif notification.type == "delete" %}
+                            <i class="bi bi-trash-fill card-icon"></i>
+                            {% elif notification.type == "comment" %}
+                            <i class="bi bi-megaphone-fill card-icon"></i>
+                            {% elif notification.type == "create" %}
+                            <i class="bi bi-plus-square-fill card-icon"></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a data-bs-toggle="collapse" href="#notification-body{{ notification.id }}" role="button" class="btn btn-outline-secondary btn-sm mt-3 mb-3">
+                            <i class="bi bi-chevron-expand"></i>{{ notification.subject|safe }}
+                            </a>
+                            <div class="collapse left border p-2" id="notification-body{{ notification.id }}">
+                                {{ notification.body|safe }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--activity section end-->

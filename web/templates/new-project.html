@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+    <div class="d-table-cell align-middle">
+        <div class="text-center mt-4">
+            <h1 class="h2">New Project</h1>
+            <p class="lead">
+                please fill in the fields below
+            </p>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="m-sm-4">
+                    <form method="POST" enctype="multipart/form-data">
+                            {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label")}}
+                            {{ form.name(class="form-control")}}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.description.label(class="form-label")}}
+                            {{ form.description(class="form-control")}}
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                {{ form.status.label(class="form-label")}}
+                                {{ form.status(class="form-control")}}
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                {{ form.priority.label(class="form-label")}}
+                                {{ form.priority(class="form-control")}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                {{ form.deadline.label(class="form-label")}}
+                                {{ form.deadline(class="form-control")}}
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                {{ form.file.label(class="form-label")}}
+                                {{ form.file(class="form-control")}}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {{ form.developers.label(class="form-label")}}
+                            {{ form.developers(class="form-control")}}
+                        </div>
+                        <div class="text-center mt-3">
+                            {{ form.submit(class="btn btn-primary btn-lg")}}
+                        </div>
+                        <!--error message-->
+                        {% for field, errors in form.errors.items() %}
+                        <br><br>
+                        <small class="form-text text-danger">
+                        {{ ', '.join(errors) }}
+                        </small>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

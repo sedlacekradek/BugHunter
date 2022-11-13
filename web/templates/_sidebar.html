@@ -1,0 +1,62 @@
+<!--sidebar-->
+<div class="d-flex flex-column bg-light vh-100 sticky-top" style="width: 100px;">
+    <div class="nav nav-pills nav-flush flex-column mb-auto text-center">
+        <!--if user logged in-->
+        {% if current_user.is_authenticated %}
+
+        <!--send HTMX request for update of notifications-->
+        <div id="notification-profile"
+            hx-get="/notification-profile"
+            hx-trigger="every 20s"
+            hx-swap="outerHTML"
+            hx-target="#notification-profile">
+            <!--call python function for new notifications-->
+            {% set new_notifications = current_user.new_notifications() %}
+            <!--show badge if new notifications-->
+            {% if new_notifications %}
+            <a href="{{ url_for('views.home') }}" class="notification nav-link border-bottom {{'active' if active=='home' }}"> <i class="bi bi-house-fill"></i> Home <span class="badge">{{ new_notifications }}</span> </a>
+            <!--if no new notifications-->
+            {% else %}
+            <a href="{{ url_for('views.home') }}" class="nav-link border-bottom {{'active' if active=='home' }}"> <i class="bi bi-house-fill"></i> Home </a>
+            {% endif %}
+        </div>
+        <a href="{{ url_for('views.projects') }}" class="nav-link border-bottom {{'active' if active=='projects' }}"> <i class="bi bi-bug-fill"></i> Projects </a>
+        <a href="{{ url_for('views.people') }}" class="nav-link border-bottom {{'active' if active=='people' }}"> <i class="bi bi-person-circle"></i> People </a>
+
+        <!--send HTMX request for update of messages-->
+        <div id="notification-messages"
+            hx-get="/notification-messages"
+            hx-trigger="every 20s"
+            hx-swap="outerHTML"
+            hx-target="#notification-messages">
+            <!--call python function for new messages-->
+            {% set new_messages = current_user.new_messages() %}
+            <!--show badge if new messages-->
+            {% if new_messages %}
+            <a href="{{ url_for('views.messages') }}" class="notification nav-link border-bottom {{'active' if active=='messages' }}"> <i class="bi bi-chat-dots-fill"></i> Messages<span class="badge">{{ new_messages }}</span> </a>
+            <!--if no new messages-->
+            {% else %}
+            <a href="{{ url_for('views.messages') }}" class="notification nav-link border-bottom {{'active' if active=='messages' }}"> <i class="bi bi-chat-dots-fill"></i>Messages</a>
+            {% endif %}
+        </div>
+        <!--if user not logged in-->
+        {% else %}
+        <a href="{{ url_for('auth.login') }}" class="nav-link border-bottom {{'active' if active=='login' }}"> <i class="bi bi-door-open-fill"></i><small>Log in</small> </a>
+        <a href="{{ url_for('auth.signup') }}" class="nav-link border-bottom {{'active' if active=='signup' }}"> <i class="bi bi-pencil-fill"></i> <small>Sign up</small> </a>
+        {% endif %}
+    </div>
+    <!--dropdown menu -->
+    {% if current_user.is_authenticated %}
+    <div class="dropdown border-top">
+        <a class="d-flex align-items-center justify-content-center link-dark text-decoration-none " data-bs-toggle="dropdown">
+        <img src="{{ current_user.avatar }}" width="48" height="48" class="rounded-circle mb-3 mt-2">
+        <small> <i class="bi bi-caret-up"></i></small></a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change Password</a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log out</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!--sidebar end-->

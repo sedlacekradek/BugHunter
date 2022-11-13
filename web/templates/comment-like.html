@@ -1,0 +1,21 @@
+<div id="likes-count-{{comment.id}}" class="p-2">
+    {{ comment.likes|length }}
+    <!--check if user liked comment with this id-->
+    {% if current_user.id in comment.likes|map(attribute="author")|list %}
+    <!-- bi-star-fill if comment already liked-->
+    <a
+        hx-get="/like-comment/{{ comment.id }}"
+        hx-trigger="click"
+        hx-swap="outerHTML"
+        hx-target="#likes-count-{{comment.id}}">
+    <i class="bi bi-star-fill text-warning"></i></a>
+    {% else %}
+    <!-- bi-star if comment not liked-->
+    <a
+        hx-get="/like-comment/{{ comment.id }}"
+        hx-trigger="click"
+        hx-swap="outerHTML"
+        hx-target="#likes-count-{{comment.id}}">
+    <i class="bi bi-star text-warning"></i></a>
+    {% endif %}
+</div>

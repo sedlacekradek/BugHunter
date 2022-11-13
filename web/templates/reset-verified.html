@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container d-flex flex-column">
+<div class="row vh-100">
+    <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+        <div class="d-table-cell align-middle">
+            <div class="text-center mt-4">
+                <h1 class="h2">Replace forgotten password</h1>
+                <p class="lead">
+                    please chose a new password
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="m-sm-4">
+                        <div class="text-center">
+                            <img src="{{ url_for('static', filename='img/logo.png') }}"
+                                class="img-fluid rounded-circle" width="132" height="132">
+                        </div>
+                        <form method="post">
+                                {{ form.hidden_tag() }}
+                                <div class="mb-3">
+                                    {{ form.password.label(class="form-label")}}
+                                    {{ form.password(class="form-control")}}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.password_repeat.label(class="form-label")}}
+                                    {{ form.password_repeat(class="form-control")}}
+                                </div>
+                                <div class="text-center mt-3">
+                                    {{ form.submit(class="btn btn-primary btn-lg")}}
+                                </div>
+                                <!--error message-->
+                                {% for field, errors in form.errors.items() %}
+                                <br><br>
+                                <small class="form-text text-danger">
+                                {{ ', '.join(errors) }}
+                                </small>
+                                {% endfor %}
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

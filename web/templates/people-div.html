@@ -1,0 +1,37 @@
+<!--people section-->
+<div class="row">
+    <div class="col mt-1">
+        <div class="card flex-fill">
+            <div class="card-header">
+                <span class="card-title mb-0">People in the Organization</span>
+                <button style="float: right;" type="button" class="btn btn-outline-primary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#invite-modal">invite
+                <i class="bi bi-plus"></i></button>
+            </div>
+            <div>
+                <table class="table table-hover my-0 datatable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Active Tickets</th>
+                            <th class="d-none d-xl-table-cell">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td><a href="{{ url_for('views.profile', id_number=user.id) }}">{{user.username}}</a></td>
+                            <td>{{ user.department }}</td>
+                            <td> {{ user.tickets|count }} </td>
+                            <td class="d-none d-xl-table-cell"><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--section end-->

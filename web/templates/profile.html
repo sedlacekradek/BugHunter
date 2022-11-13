@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+
+    {% include "profile-info.html" %}
+
+    <!--notification section-->
+    {% if current_user.id == user.id %}
+    <!--show notifications if viewing own profile-->
+    {% include "profile-notifications.html" %}
+    <!--if not own profile-->
+    {% else %}
+    <!--check if user profile is private-->
+    {% if user.private_profile == 0 %}
+    <!--show user activity if not private-->
+    {% include "profile-activity.html" %}
+    <!--show private message if private-->
+    {% else %}
+    {% include "profile-private.html" %}
+    {% endif %}
+    {% endif %}
+    <!--section end-->
+
+</div>
+{% endblock %}

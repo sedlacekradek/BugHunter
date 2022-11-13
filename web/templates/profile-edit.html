@@ -1,0 +1,44 @@
+<!--profile edit-->
+<div class="col-md-4 col-xl-3">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-1">Profile Details</h5>
+            {% if user == current_user %}
+            <a href="{{ url_for('views.profile', id_number=current_user.id)}}" class="btn btn-outline-primary btn-sm"><i
+                class="bi bi-caret-left-fill"></i> go back</a>
+            {% endif %}
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="card-body text-center">
+                <img src="{{ user.avatar }}"
+                    class="img-fluid rounded-circle mb-2" width="128" height="128"><br>
+                {{ form.file(class="small file-form") }}<br><br>
+                <h5 class="card-title mb-2">{{user.username}}</h5>
+                <div class="text-muted mb-2">{{ form.department(class="form-control border border-info")}}</div>
+            </div>
+            <hr class="my-0">
+            <div class="card-body">
+                <h5 class="h6 card-title">Active Tickets</h5>
+                {% for ticket in user.tickets %}
+                <!--show only ticket that are open or in progress-->
+                {% if ticket.status in ['In Progress', 'Open'] %}
+                <a href="{{ url_for('views.view_ticket', id_number=ticket.id) }}" class="btn btn-sm btn-outline-primary">{{ticket.name}}</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <hr class="my-0">
+            <div class="card-body">
+                <h5 class="h6 card-title">About</h5>
+                <p>{{ form.description(class="form-control border border-info")}}</p>
+            </div>
+            <p><b>Make Activity Private:</b><br>
+                {{ form.private(class="form-check-input") }}
+            </p>
+            <div class="text-center mt-3">
+                {{ form.submit(class="btn btn-primary btn-lg mb-3")}}
+            </div>
+        </form>
+    </div>
+</div>
+<!--profile edit end-->

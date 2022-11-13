@@ -1,0 +1,93 @@
+<div class="card" id="project-details">
+    <div class="card-body">
+        <div class="row">
+            <div class="col"><a
+                href="{{ url_for('views.view_project', id_number=project.id)}}" class="btn btn-outline-primary btn-sm" style="float: right;"><i
+                class="bi bi-caret-left-fill"></i> go back</a>
+                {% if current_user.id == project.author %}
+                <!--delete button disabled in edit mode-->
+                <button disabled
+                    class="btn btn-outline-danger btn-sm" style="float: left;">
+                    <i class="bi bi-trash2-fill"></i> delete</button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="m-sm-4">
+            <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    <span class="form-label">Name</span>
+                    <span class="form-control">{{project.name}}</span>
+                </div>
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label")}}
+                    {{ form.description(class="form-control border border-info")}}
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        {{ form.status.label(class="form-label")}}
+                        {{ form.status(class="form-control border border-info")}}
+                    </div>
+                    <div class="mb-3 col-6">
+                        {{ form.priority.label(class="form-label")}}
+                        {{ form.priority(class="form-control border border-info")}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        <span class="form-label">Created</span>
+                        <span class="form-control">{{project.date_created}}</span>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <span class="form-label">Last Update</span>
+                        <span class="form-control">{{project.last_update|datetime_format}}</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ form.developers.label(class="form-label")}}
+                    {{ form.developers(class="form-control border border-info")}}
+                </div>
+                <div class="mb-3">
+                    <span class="form-label">Tickets</span>
+                    <span class="form-control">
+                    {% for ticket in project.tickets %}
+                    {{ ticket.name }}
+                        <!--badge based on ticket status-->
+                        <span class="badge
+                        {{'bg-warning' if ticket.status=='In Progress' }}
+                        {{'bg-danger' if ticket.status=='Cancelled' }}
+                        {{'bg-success' if ticket.status=='Done' }}
+                        {{'bg-primary' if ticket.status=='Open' }}">
+                    {{ticket.status}}</span><br>
+                    {% endfor %}
+                    </span>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        {{ form.deadline.label(class="form-label")}}
+                        {{ form.deadline(class="form-control border border-info")}}
+                    </div>
+                    <div class="mb-3 col-6">
+                        <span class="form-label">Attached File</span>
+                        <!--if file uploaded-->
+                        {% if project.file != "" %}
+                        <a href="{{url_for('views.delete_project_file', id_number = project.id)}}"><span class="mt-2 form-control border border-info"><i class="bi bi-trash2-fill text-primary"></i>delete file</span></a>
+                        {% else %}
+                        <span class="form-control mt-2">none</span>
+                        {% endif %}
+                    </div>
+                    <div class="text-center mt-3">
+                        {{ form.submit(class="btn btn-primary btn-lg")}}
+                    </div>
+                    <!--error message-->
+                    {% for field, errors in form.errors.items() %}
+                    <br><br>
+                    <small class="form-text text-danger">
+                    {{ ', '.join(errors) }}
+                    </small>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

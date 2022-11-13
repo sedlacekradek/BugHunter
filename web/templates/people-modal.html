@@ -1,0 +1,32 @@
+<!--modal section-->
+<div class="modal" id="invite-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Invite Users</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Please fill in the mail of the user you would like to invite to BugHunter:
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3 mt-3">
+                        {{ form.email.label(class="form-label")}}
+                        {{ form.email(class="form-control")}}
+                    </div>
+                    <div class="text-center mt-3">
+                        {{ form.submit(class="btn btn-primary btn-lg")}}
+                    </div>
+                    <!--error message-->
+                    {% for field, errors in form.errors.items() %}
+                    <br><br>
+                    <small class="form-text text-danger">
+                    {{ ', '.join(errors) }}
+                    </small>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end-->

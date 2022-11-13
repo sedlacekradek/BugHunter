@@ -1,0 +1,13 @@
+<div id="notification-messages"
+    hx-get="/notification-messages"
+    hx-trigger="every 20s"
+    hx-swap="outerHTML"
+    hx-target="#notification-messages">
+    <!--call python function to get new messages-->
+    {% set new_messages = current_user.new_messages() %}
+    {% if new_messages %}
+    <a href="{{ url_for('views.messages') }}" class="notification nav-link border-bottom {{'active' if active=='messages' }}"> <i class="bi bi-chat-dots-fill"></i> <small>Messages</small><span class="badge">{{ new_messages }}</span></a>
+    {% else %}
+    <a href="{{ url_for('views.messages') }}" class="nav-link border-bottom {{'active' if active=='messages' }}"> <i class="bi bi-chat-dots-fill"></i> <small>Messages</small></a>
+    {% endif %}
+</div>

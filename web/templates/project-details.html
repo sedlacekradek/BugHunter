@@ -1,0 +1,115 @@
+<div class="card" id="project-details">
+    <div class="card-body">
+        <div class="row">
+           <!-- edit button -->
+            <div class="col"><a
+                class="btn btn-outline-primary btn-sm" style="float: right;"
+                hx-get="/project-edit/{{project.id}}"
+                hx-trigger="click"
+                hx-target="#project-details"
+                hx-swap="outerHTML"><i
+                class="bi bi-pen-fill"></i> edit</a>
+                <!--delete button with htmx confirmation shown if current_user == project.author -->
+                {% if current_user.id == project.author %}
+                <a
+                    href="{{ url_for('views.delete_project', id_number=project.id)}}"
+                    class="btn btn-outline-danger btn-sm" style="float: left;"
+                    hx-confirm="Are you sure you want to delete {{ project.name }}?" hx-boost="true"><i
+                    class="bi bi-trash2-fill"></i> delete</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="m-sm-4">
+            <div class="mb-3">
+                <span class="form-label">Name and Author</span>
+                <span class="form-control">{{project.name}} created by <a href="{{ url_for('views.profile', id_number=project.author) }}">{{ author }}</a></span>
+            </div>
+            <div class="mb-3">
+                <span class="form-label">Description</span>
+                <span class="form-control">{{project.description}}</span>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <span class="form-label">Status</span>
+                    <span class="form-control badge
+                        {{'bg-warning' if project.status=='In Progress' }}
+                        {{'bg-danger' if project.status=='Cancelled' }}
+                        {{'bg-success' if project.status=='Done' }}
+                        {{'bg-primary' if project.status=='Open' }}">{{project.status}}</span>
+                </div>
+                <div class="mb-3 col-6">
+                    <span class="form-label">Priority</span>
+                    <span class="form-control badge
+                        {{'bg-warning' if project.priority=='Medium' }}
+                        {{'bg-danger' if project.priority=='High' }}
+                        {{'bg-danger' if project.priority=='Critical' }}
+                        {{'bg-success' if project.priority=='Low' }}">{{project.priority}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <span class="form-label">Created</span>
+                    <span class="form-control">{{project.date_created|datetime_format }}</span>
+                </div>
+                <div class="mb-3 col-6">
+                    <span class="form-label">Last Update</span>
+                    <span class="form-control">{{project.last_update|datetime_format }}</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <span class="form-label">Developers</span>
+                <span class="form-control">
+                <!--list of all developers assigned -->
+                    {% for developer in project.developers %}
+                <a href="{{ url_for('views.profile', id_number=developer.id) }}">{{ developer.username }} </a> from {{ developer.department }}<br>
+                {% endfor %}</span>
+            </div>
+            <div class="mb-3">
+                <span class="form-label">Tickets</span>
+                <span class="form-control">
+                {% if project.tickets %}
+                    <!--list of all tickets assigned -->
+                {% for ticket in project.tickets %}
+                <a href="{{ url_for('views.view_ticket', id_number = ticket.id)}}">{{ ticket.name }}</a> <span class="mb-2 badge
+                    {{'bg-warning' if ticket.status=='In Progress' }}
+                    {{'bg-danger' if ticket.status=='Cancelled' }}
+                    {{'bg-success' if ticket.status=='Done' }}
+                    {{'bg-primary' if ticket.status=='Open' }}">
+                {{ticket.status}}</span><br>
+                {% endfor %}
+                {% else %}
+                no assigned tickets
+                {% endif %}
+                </span><br>
+                <div style="row"><a href="{{ url_for('views.new_ticket', project_id = project.id)}}"
+                    class="btn btn-outline-primary btn-sm">new ticket <i class="bi bi-plus"></i></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <span class="form-label">Days to deadline</span>
+                    <span class="form-control {{'text-danger' if project.days_left<1}}">{{project.days_left}}</span>
+                </div>
+                <div class="mb-3 col-6">
+                    <span class="form-label">Attached File</span>
+                    <!--if file uploaded -->
+                    {% if project.file != "" %}
+                    <a download href="{{ project.file }}"><span
+                        class="form-control"><i
+                        class="bi bi-cloud-download-fill text-primary"></i></span></a>
+                    {% else %}
+                    <span class="form-control">none</span>
+                    {% endif %}
+                </div>
+            </div>
+            <!--if comments -->
+            {% if project.comments|length > 0 %}
+            <a data-bs-toggle="collapse" href="#comments" role="button" class="btn btn-primary btn-sm mt-3">
+            <i class="bi bi-chevron-expand"></i> View {{project.comments|length}} Comments
+            </a>
+            {% else %}
+            <small class="text-muted">No Comments</small>
+            {% endif %}
+        </div>
+    </div>
+</div>

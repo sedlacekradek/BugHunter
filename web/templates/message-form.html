@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center mt-4">
+    <h1 class="h2">Send Message</h1>
+    <p class="lead">
+        to {{ recipient.username }}<br>
+        <img src="{{ current_user.avatar }}"
+            class="img-fluid rounded-circle mb-2 mt-2" width="64" height="64">
+        <i class="bi bi-arrow-right-short text-primary"></i>
+        <img src="{{ recipient.avatar }}"
+            class="img-fluid rounded-circle mb-2" width="64" height="64">
+    </p>
+</div>
+<div class="card mt-3">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div>
+                {{form.text.label(class="form-label")}}
+                {{ form.text(class="form-control border")}}
+            </div>
+            <br>
+            <div class="row">
+                {{form.submit(class="btn btn-primary")}}
+                <!--error message-->
+                {% for field, errors in form.errors.items() %}
+                <br><br>
+                <small class="form-text text-danger">
+                {{ ', '.join(errors) }}
+                </small>
+                {% endfor %}
+            </div>
+        </form>
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='text') }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{% include "_header.html" %}
+
+<body>
+
+{% include "_alerts.html" %}
+
+<main class="d-flex w-100">
+
+{% include "_sidebar.html" %}
+
+<div class="container-fluid content">
+
+<!--main content-->
+{% block content %}
+{% endblock %}
+
+</div>
+</main>
+
+{% include "_scripts.html" %}
+
+</body>
+</html>

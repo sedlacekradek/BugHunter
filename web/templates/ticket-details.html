@@ -1,0 +1,98 @@
+<div class="card" id="ticket-details">
+   <div class="card-body">
+      <div class="row">
+         <!-- edit button -->
+         <div class="col"><a
+            class="btn btn-outline-primary btn-sm" style="float: right;"
+            hx-get="/ticket-edit/{{ticket.id}}"
+            hx-trigger="click"
+            hx-target="#ticket-details"
+            hx-swap="outerHTML"><i
+            class="bi bi-pen-fill"></i> edit</a>
+            <!--delete button with htmx confirmation shown if current_user == ticket.author -->
+            {% if current_user.id == ticket.author %}
+            <a
+               href="{{ url_for('views.delete_ticket', id_number=ticket.id)}}"
+               class="btn btn-outline-danger btn-sm" style="float: left;"
+               hx-confirm="Are you sure you want to delete {{ ticket.name }}?" hx-boost="true"><i
+               class="bi bi-trash2-fill"></i> delete</a>
+            {%  endif %}
+         </div>
+      </div>
+      <div class="m-sm-4">
+         <div class="mb-3">
+            <span class="form-label">Name and Author</span>
+            <span class="form-control">{{ticket.name}} created by  <a href="{{ url_for('views.profile', id_number=ticket.author) }}">{{ author }}</a></span>
+         </div>
+         <div class="mb-3">
+            <span class="form-label">Description</span>
+            <span class="form-control">{{ticket.description}}</span>
+         </div>
+         <div class="row">
+            <div class="mb-3 col-6">
+               <span class="form-label">Status</span>
+               <span class="form-control badge
+                  {{'bg-warning' if ticket.status=='In Progress' }}
+                  {{'bg-danger' if ticket.status=='Cancelled' }}
+                  {{'bg-success' if ticket.status=='Done' }}
+                  {{'bg-primary' if ticket.status=='Open' }}">{{ticket.status}}</span>
+            </div>
+            <div class="mb-3 col-6">
+               <span class="form-label">Type</span>
+               <span class="form-control badge
+                  {{'bg-info' if ticket.type=='Feature' }}
+                  {{'bg-secondary' if ticket.type=='Bug' }}">
+               {{ticket.type}}</span>
+            </div>
+         </div>
+         <div class="row">
+            <div class="mb-3 col-6">
+               <span class="form-label">Created</span>
+               <span class="form-control">{{ticket.date_created|datetime_format}}</span>
+            </div>
+            <div class="mb-3 col-6">
+               <span class="form-label">Last Update</span>
+               <span class="form-control">{{ticket.last_update|datetime_format}}</span>
+            </div>
+         </div>
+         <div class="mb-3">
+            <span class="form-label">Developers</span>
+            <span class="form-control">
+            <!--list of all developers assigned -->
+            {% for developer in ticket.developers %}
+            <a href="{{ url_for('views.profile', id_number=developer.id) }}">{{ developer.username }} </a> from {{ developer.department }}<br>
+            {% endfor %}</span>
+         </div>
+         <div class="row">
+            <div class="mb-3 col-6">
+               <span class="form-label">Project</span>
+               <span class="form-control">
+               <a href="{{ url_for('views.view_project', id_number = project.id)}}">{{ticket.project.name}}</a></span><br>
+               <br>
+            </div>
+            <div class="mb-3 col-6">
+               <span class="form-label">Attached File</span>
+               <!--if file uploaded -->
+               {% if ticket.file != "" %}
+               <a download href="{{ ticket.file }}"><span
+                  class="form-control"><i
+                  class="bi bi-cloud-download-fill text-primary"></i></span></a>
+               {% else %}
+               <span class="form-control">none</span>
+               {% endif %}
+            </div>
+         </div>
+         <div style="row"><a href="{{ url_for('views.new_ticket', project_id = project.id)}}"
+            class="btn btn-outline-primary btn-sm">new ticket <i class="bi bi-plus"></i></a>
+         </div>
+      </div>
+      <!--if comments -->
+      {% if ticket.comments|length > 0 %}
+      <a data-bs-toggle="collapse" href="#comments" role="button" class="btn btn-primary btn-sm mt-3">
+      <i class="bi bi-chevron-expand"></i> View {{ticket.comments|length}} Comments
+      </a>
+      {% else %}
+      <small class="text-muted">No Comments</small>
+      {% endif %}
+   </div>
+</div>

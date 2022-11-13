@@ -1,0 +1,46 @@
+<!--project section-->
+<div class="col-lg-6 col-12" style="margin-top: 5px;">
+    <div class="card flex-fill">
+        <div class="card-header">
+            <span class="card-title mb-0">My Projects</span><span style="float: right;"><a href="{{ url_for('views.new_project')}}" class="btn btn-outline-primary btn-sm">add <i class="bi bi-plus"></i></a></span>
+        </div>
+        <div>
+            <table class="table table-hover my-0 datatable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th class="d-none d-xl-table-cell">Days to Deadline </th>
+                        <th>Status </th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <!--show projects if user in developers or is the author-->
+                    {% if current_user in project.developers or current_user.id == project.author  %}
+                    <tr>
+                        <td><a href="{{ url_for('views.view_project', id_number=project.id) }}">{{project.name}}</a></td>
+                        <td class="d-none d-xl-table-cell"><span class="{{'text-danger' if project.days_left<1}}">{{project.days_left}}</span></td>
+                        <td><span class="badge
+                            {{'bg-warning' if project.status=='In Progress' }}
+                            {{'bg-danger' if project.status=='Cancelled' }}
+                            {{'bg-success' if project.status=='Done' }}
+                            {{'bg-primary' if project.status=='Open' }}">
+                            {{project.status}}</span>
+                        </td>
+                        <td><span class="badge
+                            {{'bg-warning' if project.priority=='Medium' }}
+                            {{'bg-danger' if project.priority=='High' }}
+                            {{'bg-danger' if project.priority=='Critical' }}
+                            {{'bg-success' if project.priority=='Low' }}">
+                            {{project.priority}}</span>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--section end-->

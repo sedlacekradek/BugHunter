@@ -1,0 +1,16 @@
+deepdiff==6.2.1
+Flask==2.2.2
+Flask_CKEditor==0.4.6
+Flask_Login==0.6.2
+Flask_Mail==0.9.1
+Flask_SQLAlchemy
+Flask_WTF==1.0.1
+PyJWT==2.6.0
+python-dotenv==0.21.0
+SQLAlchemy
+Werkzeug==2.2.2
+WTForms==3.0.1
+WTForms_SQLAlchemy==0.3
+gunicorn
+psycopg2
+email_validator

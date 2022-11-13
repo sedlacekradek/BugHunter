@@ -1,0 +1,13 @@
+<div id="notification-profile"
+    hx-get="/notification-profile"
+    hx-trigger="every 20s"
+    hx-swap="outerHTML"
+    hx-target="#notification-profile">
+    <!--call python function for new notifications-->
+    {% set new_notifications = current_user.new_notifications() %}
+    {% if new_notifications %}
+    <a href="{{ url_for('views.home') }}" class="notification nav-link border-bottom {{'active' if active=='home' }}"> <i class="bi bi-house-fill"></i> Home <span class="badge">{{ new_notifications }}</span></a>
+    {% else %}
+    <a href="{{ url_for('views.home') }}" class="nav-link border-bottom {{'active' if active=='home' }}"> <i class="bi bi-house-fill"></i> Home </a>
+    {% endif %}
+</div>

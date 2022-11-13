@@ -1,0 +1,28 @@
+<div class="card mt-3">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+                {{ comment_form.hidden_tag() }}
+            <div class="mb-3">
+                {{ comment_form.text.label(class="form-label")}}
+                {{ comment_form.text(class="form-control border")}}
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ comment_form.file(class="form-control")}}
+                </div>
+                <div class="col-6">
+                    {{comment_form.submit(class="btn btn-primary")}}
+                </div>
+                <!--error message-->
+                {% for field, errors in comment_form.errors.items() %}
+                <br><br>
+                <small class="form-text text-danger">
+                {{ ', '.join(errors) }}
+                </small>
+                {% endfor %}
+            </div>
+        </form>
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='text') }}
+    </div>
+</div>
