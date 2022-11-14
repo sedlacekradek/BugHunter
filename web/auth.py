@@ -32,7 +32,7 @@ def login():
             flash("User does not exist.", category="error")
     return render_template("login.html", form=form, active="login")
 
-### AUTH FUNCTIONS ###
+
 @auth.route("/demo", methods=["GET", "POST"])
 def demo_user():
     user = User.query.filter_by(email="demo@demo.demo").first()
